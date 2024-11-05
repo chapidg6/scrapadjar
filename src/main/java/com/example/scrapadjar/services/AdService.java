@@ -1,6 +1,8 @@
 package com.example.scrapadjar.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.scrapadjar.dtos.AdDTO;
@@ -113,9 +115,9 @@ public class AdService {
     return new AdDTO(ad.getId(), ad.getName(), ad.getAmount(), ad.getPrice());
 }
 
-public List<AdDTO> searchAds(String term) {
-    List<Ad> resultAds = adRepository.searchAds(term);
-    return resultAds.stream().map(this::convertAdToDTO).collect(Collectors.toList());
+public Page<AdDTO> searchAds(String term, Pageable pageable) {
+    Page<Ad> resultAds = adRepository.searchAds(term, pageable);
+    return resultAds.map(this::convertAdToDTO);
 }
 
 

@@ -1,6 +1,8 @@
 package com.example.scrapadjar.controllers;
 
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +27,8 @@ public class AdController {
     private AdService adService;
 
     @GetMapping("/search")
-    public List<AdDTO> searchAds(@RequestParam("term") String term) {
-        return adService.searchAds(term);
+    public Page<AdDTO> searchAds(@RequestParam("term") String term, Pageable pageable) {
+        return adService.searchAds(term, pageable);
     }
 
      @GetMapping("/addetail/{id}")

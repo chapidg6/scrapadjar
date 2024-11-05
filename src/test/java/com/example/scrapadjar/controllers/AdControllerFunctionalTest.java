@@ -19,13 +19,17 @@ public class AdControllerFunctionalTest {
     @Test
     public void testSearchAds() throws Exception {
         mockMvc.perform(get("/scrapadjar/search")
-        .param("term", "cobre"))  
+        .param("term", "cobre")
+        .param("page", "0")     
+        .param("size", "4"))    
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(3)))
-        .andExpect(jsonPath("$[0].id").value("223c983b-f32d-4b06-b17d-16061dead330"))
-        .andExpect(jsonPath("$[1].id").value("25393260-f0d0-47e9-899f-2aefa5c6fcff"))
-        .andExpect(jsonPath("$[2].id").value("b434b963-ad9f-47db-b22e-e8d5c04d4e70"));
-
+        .andExpect(jsonPath("$.content", hasSize(3))) // Verifica que hay 3 elementos en la página actual
+        .andExpect(jsonPath("$.content[0].id").value("223c983b-f32d-4b06-b17d-16061dead330"))
+        .andExpect(jsonPath("$.content[1].id").value("25393260-f0d0-47e9-899f-2aefa5c6fcff"))
+        .andExpect(jsonPath("$.content[2].id").value("b434b963-ad9f-47db-b22e-e8d5c04d4e70"))
+        .andExpect(jsonPath("$.totalElements", is(3))) // Verifica el total de elementos en todos los resultados 
+        .andExpect(jsonPath("$.size", is(4)))          // Verifica el tamaño de página solicitado
+        .andExpect(jsonPath("$.number", is(0)));  
     }
 
     @Test
